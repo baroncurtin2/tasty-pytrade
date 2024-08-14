@@ -1,0 +1,2 @@
+class TastyTradeException(Exception):
+    pass
