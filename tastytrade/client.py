@@ -2,6 +2,8 @@ import asyncio
 from dataclasses import dataclass, field, InitVar
 from typing import Self, Any
 from urllib.parse import urljoin
+from dataclasses import dataclass, field, InitVar
+from typing import Self
 
 import aiohttp
 from fake_useragent import UserAgent
@@ -80,12 +82,13 @@ class TastyTradeClient:
     async def delete(self, endpoint: str, params: dict | None = None) -> Any:
         return await self._request("DELETE", endpoint, params=params)
 
-
 def _get_base_url(sandbox: bool) -> str:
     if sandbox:
-        return APP_ENV_CONFIG.get("BASE_SANDBOX_URL")
+        url = APP_ENV_CONFIG.get("BASE_SANDBOX_URL")
+    else:
+        url = APP_ENV_CONFIG.get("BASE_PROD_URL")
 
-    return APP_ENV_CONFIG.get("BASE_PROD_URL")
+    return url.rstrip("/")
 
 
 def _get_default_headers() -> dict[str, str]:
